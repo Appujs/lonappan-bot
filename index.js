@@ -41,7 +41,7 @@ async function connectDB() {
 // ─── Startup ──────────────────────────────────────────────────────────────────
 async function main() {
   Logger.system('╔════════════════════════════════════════╗');
-  Logger.system('║         L O N A P P A N BOT  —  Starting        ║');
+  Logger.system('║         LEONEX BOT  —  Starting        ║');
   Logger.system('╚════════════════════════════════════════╝');
 
   // 1. Connect to database
@@ -51,16 +51,16 @@ async function main() {
   loadCommands(client);
   loadEvents(client);
 
-  // 3. Login to Discord
-  if (!config.token || config.token === 'MTUxMjc1NTc4OTg5MzMzNzIyOA.GseyUZ.wa6YlX21teubU-mWVcczkq7zR4Une86G6b-mTM') {
+  // 3. Start Express Dashboard
+  dashboard.init(client);
+
+  // 4. Login to Discord
+  if (!config.token || config.token === 'insert_bot_token_here') {
     Logger.error('DISCORD_TOKEN is not set in your .env file! Please add it before starting the bot.');
     process.exit(1);
   }
 
   await client.login(config.token);
-
-  // 4. Start Express Dashboard
-  dashboard.init(client);
 }
 
 // ─── Unhandled Rejection Safety Net ──────────────────────────────────────────
