@@ -52,7 +52,7 @@ async function main() {
   loadEvents(client);
 
   // 3. Login to Discord
-  if (!config.token || config.token === 'insert_bot_token_here') {
+  if (!config.token || config.token === 'MTUxMjc1NTc4OTg5MzMzNzIyOA.GseyUZ.wa6YlX21teubU-mWVcczkq7zR4Une86G6b-mTM') {
     Logger.error('DISCORD_TOKEN is not set in your .env file! Please add it before starting the bot.');
     process.exit(1);
   }
