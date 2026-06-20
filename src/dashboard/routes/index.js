@@ -12,13 +12,24 @@ function requireAuth(req, res, next) {
 
 // ─── HOME ───────────────────────────────────────────────────────────────────
 router.get('/', (req, res) => {
-  const client = req.app.locals.client;
+  const client = req.app.locals.discordClient;
   const stats = {
     guilds: client ? client.guilds.cache.size : 0,
     users: client ? client.guilds.cache.reduce((a, g) => a + g.memberCount, 0) : 0,
     uptime: client ? formatUptime(client.uptime) : '–'
   };
   res.render('index', { stats });
+});
+
+// ─── API STATS (CORS Enabled for external site) ──────────────────────────────
+router.get('/api/stats', (req, res) => {
+  const client = req.app.locals.discordClient;
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.json({
+    guilds: client ? client.guilds.cache.size : 0,
+    users: client ? client.guilds.cache.reduce((a, g) => a + g.memberCount, 0) : 0,
+    uptime: client ? formatUptime(client.uptime) : '–'
+  });
 });
 
 // ─── LOGIN (Discord OAuth2) ──────────────────────────────────────────────────
@@ -84,7 +95,7 @@ router.get('/logout', (req, res) => {
 
 // ─── DASHBOARD (Guild Selector) ───────────────────────────────────────────────
 router.get('/dashboard', requireAuth, (req, res) => {
-  const client = req.app.locals.client;
+  const client = req.app.locals.discordClient;
   const userGuilds = req.session.userGuilds || [];
 
   // Only show guilds where user has MANAGE_GUILD (0x20)
@@ -103,7 +114,7 @@ router.get('/dashboard', requireAuth, (req, res) => {
 
 // ─── GUILD SETTINGS (GET) ─────────────────────────────────────────────────────
 router.get('/dashboard/:guildId', requireAuth, async (req, res) => {
-  const client = req.app.locals.client;
+  const client = req.app.locals.discordClient;
   const { guildId } = req.params;
 
   // Confirm bot is in guild
@@ -141,7 +152,7 @@ router.get('/dashboard/:guildId', requireAuth, async (req, res) => {
 
 // ─── GUILD SETTINGS (POST) ────────────────────────────────────────────────────
 router.post('/dashboard/:guildId', requireAuth, async (req, res) => {
-  const client = req.app.locals.client;
+  const client = req.app.locals.discordClient;
   const { guildId } = req.params;
 
   // Security: verify user manages this guild
