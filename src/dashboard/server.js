@@ -39,9 +39,9 @@ function init(client) {
   app.use('/', dashboardRoutes);
 
   // Start Listener
-  const PORT = config.dashboard.port || 3000;
-  app.listen(PORT, () => {
-    Logger.system(`Web dashboard server started listening on port ${PORT}`);
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, '0.0.0.0', () => {
+    Logger.system(`Web dashboard server started on port ${PORT} (host: 0.0.0.0)`);
   });
 }
 
