@@ -1,0 +1,94 @@
+<%- include('partials/header', { pageTitle: 'Home' }) %>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">⚡ Premium Discord Bot — Powered by Gemini AI</div>
+    <h1>The Last Bot<br/>Your Server Will Ever Need</h1>
+    <p>Leonex brings moderation, AI chat, music, leveling, ticket support, security, and a sleek web dashboard to your Discord server.</p>
+    <div class="hero-buttons">
+      <a href="/login" class="btn btn-primary btn-lg" id="hero-cta">
+        🚀 Add to Discord
+      </a>
+      <a href="/dashboard" class="btn btn-ghost btn-lg">Open Dashboard</a>
+    </div>
+  </div>
+</section>
+
+<!-- Live Stats -->
+<div class="container">
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-value" data-count="<%= stats.guilds %>"><%= stats.guilds %></div>
+      <div class="stat-label">Servers</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" data-count="<%= stats.users %>"><%= stats.users %></div>
+      <div class="stat-label">Users Served</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value"><%= stats.uptime %></div>
+      <div class="stat-label">Uptime</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">50+</div>
+      <div class="stat-label">Commands</div>
+    </div>
+  </div>
+</div>
+
+<!-- Features -->
+<div class="container">
+  <h2 class="section-title">Everything Your Server Needs</h2>
+  <p class="section-sub">A comprehensive suite of tools — all in one bot.</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🛡️</div>
+      <h3>Advanced Moderation</h3>
+      <p>Ban, kick, mute, purge, lockdown with full audit logs and DM notifications for each action.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎫</div>
+      <h3>Ticket Support System</h3>
+      <p>Panel-based ticket creation, private staff channels, transcripts, and one-click closure.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🤖</div>
+      <h3>Gemini AI Chat</h3>
+      <p>Chat with Google's Gemini AI directly in Discord. Falls back to smart rule-based responses automatically.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎶</div>
+      <h3>High-Quality Music</h3>
+      <p>YouTube playback, playlists, queue management, volume control and loop modes via play-dl.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📈</div>
+      <h3>XP Leveling System</h3>
+      <p>Earn XP by chatting and spending time in voice channels. Level-up roles, leaderboards and rank cards.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>Security & Automod</h3>
+      <p>Anti-spam, anti-links, anti-badwords, alt-detection and anti-raid run 24/7 silently.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💬</div>
+      <h3>Welcome & Goodbye</h3>
+      <p>Fully customizable welcome and goodbye embeds with placeholder-based messages.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔊</div>
+      <h3>Temp Voice Channels</h3>
+      <p>Join-to-Create rooms that auto-delete when empty. Members get full control of their lounge.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌐</div>
+      <h3>Web Dashboard</h3>
+      <p>A sleek Discord OAuth2-authenticated dashboard to configure every setting without touching code.</p>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

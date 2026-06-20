@@ -1,0 +1,39 @@
+{
+  "name": "leonex-bot",
+  "version": "1.0.0",
+  "description": "Leonex - Advanced, premium, feature-rich Discord bot with dashboard",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "deploy-commands": "node deploy-commands.js"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "discord.js",
+    "moderation",
+    "dashboard",
+    "music",
+    "tickets",
+    "ai"
+  ],
+  "author": "Akhilesh",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/voice": "^0.17.0",
+    "@google/generative-ai": "^0.11.1",
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "libsodium-wrappers": "^0.7.13",
+    "mongoose": "^8.4.1",
+    "node-fetch": "^2.7.0",
+    "play-dl": "^1.9.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.3"
+  }
+}

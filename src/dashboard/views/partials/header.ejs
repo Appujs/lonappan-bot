@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Leonex – Advanced, premium, feature-rich Discord bot with moderation, AI, music, leveling, tickets, and a web dashboard." />
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle + ' | Leonex' : 'Leonex – Premium Discord Bot' %></title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/" class="navbar-brand">
+    <div class="logo-icon">⚡</div>
+    <span>Leonex</span>
+  </a>
+  <div class="navbar-links">
+    <a href="/">Home</a>
+    <a href="/dashboard">Dashboard</a>
+  </div>
+  <div class="navbar-user">
+    <% if (user) { %>
+      <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png?size=64" alt="<%= user.username %>" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'" />
+      <span><%= user.username %></span>
+      <a href="/logout" class="btn btn-ghost btn-sm">Logout</a>
+    <% } else { %>
+      <a href="/login" class="btn btn-primary btn-sm">Login with Discord</a>
+    <% } %>
+  </div>
+</nav>

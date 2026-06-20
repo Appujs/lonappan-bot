@@ -1,0 +1,43 @@
+<%- include('partials/header', { pageTitle: 'My Servers' }) %>
+
+<div class="container" style="padding-top:40px;padding-bottom:80px;">
+  <div class="settings-header">
+    <h1>Select a Server</h1>
+    <p>Choose a server you manage to configure Leonex settings.</p>
+  </div>
+
+  <% if (!guilds || guilds.length === 0) { %>
+    <div style="text-align:center;padding:80px 0;color:var(--text-muted);">
+      <div style="font-size:3rem;margin-bottom:16px;">😔</div>
+      <h2 style="margin-bottom:8px;">No Servers Found</h2>
+      <p>You don't appear to manage any servers yet, or you need to re-login.</p>
+      <a href="/login" class="btn btn-primary mt-4">Re-authenticate</a>
+    </div>
+  <% } else { %>
+    <div class="guilds-grid">
+      <% guilds.forEach(guild => { %>
+        <div class="guild-card">
+          <img src="<%= guild.iconUrl %>" alt="<%= guild.name %>" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'" />
+          <h3><%= guild.name %></h3>
+          <span class="guild-badge <%= guild.botPresent ? 'present' : 'absent' %>">
+            <%= guild.botPresent ? '✅ Bot Active' : '❌ Bot Missing' %>
+          </span>
+          <% if (guild.botPresent) { %>
+            <a href="/dashboard/<%= guild.id %>" class="btn btn-primary" style="width:100%;justify-content:center;">
+              ⚙️ Manage
+            </a>
+          <% } else { %>
+            <a href="https://discord.com/api/oauth2/authorize?client_id=<%= config.clientId %>&permissions=8&scope=bot%20applications.commands&guild_id=<%= guild.id %>"
+               target="_blank"
+               class="btn btn-ghost"
+               style="width:100%;justify-content:center;">
+              ➕ Invite Bot
+            </a>
+          <% } %>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

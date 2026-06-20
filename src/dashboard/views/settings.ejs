@@ -1,0 +1,347 @@
+<%- include('partials/header', { pageTitle: guild.name + ' Settings' }) %>
+
+<% if (saved) { %>
+  <div class="save-alert" id="save-alert">✅ Settings saved successfully!</div>
+<% } %>
+
+<div class="dash-layout">
+
+  <!-- ─── Sidebar ──────────────────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-guild">
+      <img src="<%= guild.iconUrl || 'https://cdn.discordapp.com/embed/avatars/0.png' %>" alt="<%= guild.name %>" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'" />
+      <div>
+        <div class="sidebar-guild-name"><%= guild.name %></div>
+        <div class="sidebar-guild-sub">Server Settings</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">General</div>
+      <div class="sidebar-item active" data-panel="panel-general">⚙️ &nbsp;General</div>
+      <div class="sidebar-item" data-panel="panel-welcome">👋 &nbsp;Welcome & Goodbye</div>
+
+      <div class="sidebar-section-title">Moderation</div>
+      <div class="sidebar-item" data-panel="panel-moderation">🛡️ &nbsp;Moderation</div>
+      <div class="sidebar-item" data-panel="panel-security">🔒 &nbsp;Security & Automod</div>
+
+      <div class="sidebar-section-title">Features</div>
+      <div class="sidebar-item" data-panel="panel-tickets">🎫 &nbsp;Tickets</div>
+      <div class="sidebar-item" data-panel="panel-leveling">📈 &nbsp;Leveling</div>
+      <div class="sidebar-item" data-panel="panel-community">🌟 &nbsp;Community</div>
+      <div class="sidebar-item" data-panel="panel-verification">✅ &nbsp;Verification</div>
+    </nav>
+
+    <div style="margin-top:24px;">
+      <a href="/dashboard" class="btn btn-ghost" style="width:100%;justify-content:center;">← Back to Servers</a>
+    </div>
+  </aside>
+
+  <!-- ─── Main Content ─────────────────────────────────────────────────── -->
+  <main class="settings-main">
+    <div class="settings-header">
+      <h1>⚙️ <%= guild.name %> Settings</h1>
+      <p>Configure all Leonex features for this server. Changes are saved instantly.</p>
+    </div>
+
+    <form id="settings-form" method="POST" action="/dashboard/<%= guild.id %>">
+
+      <!-- ── General ─────────────────────────────────────────────────── -->
+      <div class="settings-panel active" id="panel-general">
+        <div class="settings-card">
+          <div class="settings-card-title">⚙️ General Configuration</div>
+          <div class="form-group">
+            <label class="form-label" for="prefix">Command Prefix</label>
+            <input id="prefix" name="prefix" class="form-control" type="text" maxlength="5"
+              value="<%= settings.prefix || '!' %>" placeholder="!" style="max-width:120px;" />
+            <div class="form-hint">The prefix used for text commands (e.g. !help). Max 5 chars.</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <button type="submit" class="btn btn-primary" id="save-btn-general">💾 Save Changes</button>
+        </div>
+      </div>
+
+      <!-- ── Welcome & Goodbye ─────────────────────────────────────── -->
+      <div class="settings-panel" id="panel-welcome">
+        <div class="settings-card">
+          <div class="settings-card-title">👋 Welcome Messages</div>
+
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <h4>Enable Welcome Messages</h4>
+              <p>Send a welcome message when new members join.</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" name="welcomeEnabled" <%= settings.welcomeEnabled ? 'checked' : '' %> />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <h4>Use Embed Format</h4>
+              <p>Send the welcome as a rich embed instead of plain text.</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" name="welcomeEmbed" <%= settings.welcomeEmbed ? 'checked' : '' %> />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="form-group" style="margin-top:16px;">
+            <label class="form-label" for="welcomeChannelId">Welcome Channel</label>
+            <select id="welcomeChannelId" name="welcomeChannelId" class="form-control">
+              <option value="">— Disabled —</option>
+              <% channels.forEach(c => { %>
+                <option value="<%= c.id %>" <%= settings.welcomeChannelId === c.id ? 'selected' : '' %>>#<%= c.name %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="welcomeMessage">Welcome Message</label>
+            <input id="welcomeMessage" name="welcomeMessage" class="form-control"
+              value="<%= settings.welcomeMessage %>" />
+            <div class="form-hint">Placeholders: <code>{user}</code> <code>{username}</code> <code>{guild}</code> <code>{member_count}</code></div>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="settings-card-title">🚪 Goodbye Messages</div>
+
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <h4>Enable Goodbye Messages</h4>
+              <p>Post a goodbye message when a member leaves.</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" name="goodbyeEnabled" <%= settings.goodbyeEnabled ? 'checked' : '' %> />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <h4>Use Embed Format</h4>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" name="goodbyeEmbed" <%= settings.goodbyeEmbed ? 'checked' : '' %> />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="form-group" style="margin-top:16px;">
+            <label class="form-label" for="goodbyeChannelId">Goodbye Channel</label>
+            <select id="goodbyeChannelId" name="goodbyeChannelId" class="form-control">
+              <option value="">— Disabled —</option>
+              <% channels.forEach(c => { %>
+                <option value="<%= c.id %>" <%= settings.goodbyeChannelId === c.id ? 'selected' : '' %>>#<%= c.name %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="goodbyeMessage">Goodbye Message</label>
+            <input id="goodbyeMessage" name="goodbyeMessage" class="form-control"
+              value="<%= settings.goodbyeMessage %>" />
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+        </div>
+      </div>
+
+      <!-- ── Moderation ─────────────────────────────────────────────── -->
+      <div class="settings-panel" id="panel-moderation">
+        <div class="settings-card">
+          <div class="settings-card-title">📋 Log Channels</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="modLogsChannelId">Mod Logs Channel</label>
+              <select id="modLogsChannelId" name="modLogsChannelId" class="form-control">
+                <option value="">— None —</option>
+                <% channels.forEach(c => { %>
+                  <option value="<%= c.id %>" <%= settings.modLogsChannelId === c.id ? 'selected' : '' %>>#<%= c.name %></option>
+                <% }) %>
+              </select>
+              <div class="form-hint">Ban, kick, mute, warn logs sent here.</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="auditLogsChannelId">Audit Logs Channel</label>
+              <select id="auditLogsChannelId" name="auditLogsChannelId" class="form-control">
+                <option value="">— None —</option>
+                <% channels.forEach(c => { %>
+                  <option value="<%= c.id %>" <%= settings.auditLogsChannelId === c.id ? 'selected' : '' %>>#<%= c.name %></option>
+                <% }) %>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+        </div>
+      </div>
+
+      <!-- ── Security ───────────────────────────────────────────────── -->
+      <div class="settings-panel" id="panel-security">
+        <div class="settings-card">
+          <div class="settings-card-title">🔒 Automod & Security Toggles</div>
+
+          <% const toggles = [
+            { name: 'antiSpam',     label: 'Anti-Spam',      desc: 'Timeout users who send 5+ messages in 5 seconds.' },
+            { name: 'antiLinks',    label: 'Anti-Links',      desc: 'Auto-delete messages containing URLs.' },
+            { name: 'antiBadwords', label: 'Anti-Badwords',   desc: 'Delete messages with blacklisted words.' },
+            { name: 'altDetection', label: 'Alt Detection',   desc: 'Alert mods when accounts < 7 days old join.' },
+            { name: 'antiRaid',     label: 'Anti-Raid',       desc: 'Detect mass-join events and alert moderators.' }
+          ]; %>
+
+          <% toggles.forEach(t => { %>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <h4><%= t.label %></h4>
+                <p><%= t.desc %></p>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" name="<%= t.name %>" <%= settings[t.name] ? 'checked' : '' %> />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          <% }) %>
+        </div>
+        <div style="text-align:right;">
+          <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+        </div>
+      </div>
+
+      <!-- ── Tickets ────────────────────────────────────────────────── -->
+      <div class="settings-panel" id="panel-tickets">
+        <div class="settings-card">
+          <div class="settings-card-title">🎫 Ticket System</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="ticketStaffRoleId">Ticket Staff Role</label>
+              <select id="ticketStaffRoleId" name="ticketStaffRoleId" class="form-control">
+                <option value="">— None —</option>
+                <% roles.forEach(r => { %>
+                  <option value="<%= r.id %>" <%= settings.ticketStaffRoleId === r.id ? 'selected' : '' %>><%= r.name %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="ticketTranscriptsChannelId">Transcripts Channel</label>
+              <select id="ticketTranscriptsChannelId" name="ticketTranscriptsChannelId" class="form-control">
+                <option value="">— None —</option>
+                <% channels.forEach(c => { %>
+                  <option value="<%= c.id %>" <%= settings.ticketTranscriptsChannelId === c.id ? 'selected' : '' %>>#<%= c.name %></option>
+                <% }) %>
+              </select>
+            </div>
+          </div>
+          <div class="form-hint">Use <code>/ticket-setup</code> in Discord to send the ticket panel to a channel.</div>
+        </div>
+        <div style="text-align:right;">
+          <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+        </div>
+      </div>
+
+      <!-- ── Leveling ───────────────────────────────────────────────── -->
+      <div class="settings-panel" id="panel-leveling">
+        <div class="settings-card">
+          <div class="settings-card-title">📈 Leveling System</div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <h4>Enable Leveling</h4>
+              <p>Members gain XP from messages and voice activity.</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" name="levelingEnabled" <%= settings.levelingEnabled ? 'checked' : '' %> />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="form-group" style="margin-top:16px;">
+            <label class="form-label" for="levelingChannelId">Level-Up Announcement Channel</label>
+            <select id="levelingChannelId" name="levelingChannelId" class="form-control">
+              <option value="">— Current Channel —</option>
+              <% channels.forEach(c => { %>
+                <option value="<%= c.id %>" <%= settings.levelingChannelId === c.id ? 'selected' : '' %>>#<%= c.name %></option>
+              <% }) %>
+            </select>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+        </div>
+      </div>
+
+      <!-- ── Community ──────────────────────────────────────────────── -->
+      <div class="settings-panel" id="panel-community">
+        <div class="settings-card">
+          <div class="settings-card-title">🌟 Community Features</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="suggestionsChannelId">Suggestions Channel</label>
+              <select id="suggestionsChannelId" name="suggestionsChannelId" class="form-control">
+                <option value="">— Disabled —</option>
+                <% channels.forEach(c => { %>
+                  <option value="<%= c.id %>" <%= settings.suggestionsChannelId === c.id ? 'selected' : '' %>>#<%= c.name %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="countingChannelId">Counting Game Channel</label>
+              <select id="countingChannelId" name="countingChannelId" class="form-control">
+                <option value="">— Disabled —</option>
+                <% channels.forEach(c => { %>
+                  <option value="<%= c.id %>" <%= settings.countingChannelId === c.id ? 'selected' : '' %>>#<%= c.name %></option>
+                <% }) %>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+        </div>
+      </div>
+
+      <!-- ── Verification ───────────────────────────────────────────── -->
+      <div class="settings-panel" id="panel-verification">
+        <div class="settings-card">
+          <div class="settings-card-title">✅ Verification System</div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <h4>Enable Verification</h4>
+              <p>New members must click a button to receive a role and access the server.</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" name="verificationEnabled" <%= settings.verificationEnabled ? 'checked' : '' %> />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="form-row" style="margin-top:16px;">
+            <div class="form-group">
+              <label class="form-label" for="verificationRoleId">Role to Grant on Verify</label>
+              <select id="verificationRoleId" name="verificationRoleId" class="form-control">
+                <option value="">— Select Role —</option>
+                <% roles.forEach(r => { %>
+                  <option value="<%= r.id %>" <%= settings.verificationRoleId === r.id ? 'selected' : '' %>><%= r.name %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="verificationChannelId">Verification Channel</label>
+              <select id="verificationChannelId" name="verificationChannelId" class="form-control">
+                <option value="">— None —</option>
+                <% channels.forEach(c => { %>
+                  <option value="<%= c.id %>" <%= settings.verificationChannelId === c.id ? 'selected' : '' %>>#<%= c.name %></option>
+                <% }) %>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+        </div>
+      </div>
+
+    </form>
+  </main>
+</div>
+
+<%- include('partials/footer') %>
