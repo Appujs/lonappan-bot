@@ -8,7 +8,7 @@ const app = express();
 
 function init(client) {
   // Expose Discord Client to request handlers
-  app.locals.client = client;
+  app.locals.discordClient = client;
 
   // Configure Templating Engine
   app.set('view engine', 'ejs');
