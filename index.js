@@ -41,7 +41,7 @@ async function connectDB() {
 // ─── Startup ──────────────────────────────────────────────────────────────────
 async function main() {
   Logger.system('╔════════════════════════════════════════╗');
-  Logger.system('║         LEONEX BOT  —  Starting        ║');
+  Logger.system('║         L O N A P P A N BOT  —  Starting        ║');
   Logger.system('╚════════════════════════════════════════╝');
 
   // 1. Connect to database
